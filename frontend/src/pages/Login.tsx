@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router";
 import { useState } from "react";
-import { Button } from "@heroui/react";
+import { Button, Input, Label } from "@heroui/react";
 
 export default function Login() {
   let state = useState({
@@ -29,9 +29,11 @@ export default function Login() {
       <div className="flex flex-col gap-4 items-center justify-center">
         <h1>Iniciar Sesión</h1>
         <div className="flex flex-col gap-4">
-          <div>
-            <label htmlFor="email">Email:</label>
-            <input
+          <div className="flex flex-col gap-2">
+            <Label htmlFor="email" className="text-white">
+              Email:
+            </Label>
+            <Input
               type="email"
               id="email"
               name="email"
@@ -39,9 +41,11 @@ export default function Login() {
               onChange={handleChange}
             />
           </div>
-          <div>
-            <label htmlFor="password">Password:</label>
-            <input
+          <div className="flex flex-col gap-2">
+            <Label htmlFor="password" className="text-white">
+              Password:
+            </Label>
+            <Input
               type="password"
               id="password"
               name="password"
@@ -51,7 +55,7 @@ export default function Login() {
           </div>
         </div>
         <div className="flex flex-row gap-4 mt-4">
-          <Button onClick={handleLogin}>Simular Inicio de Sesión</Button>
+          <Button onClick={handleLogin}>Inicio de Sesión</Button>
           <Button onClick={() => navigate("/register")}>Registrarse</Button>
         </div>
       </div>
