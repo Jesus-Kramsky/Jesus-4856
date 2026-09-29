@@ -2,10 +2,12 @@ import { useNavigate } from "react-router";
 import { useState } from "react";
 import { Button, Input, Label } from "@heroui/react";
 
-export default function Login() {
+export default function Register() {
   let state = useState({
     email: "",
     password: "",
+    name: "",
+    balance: 0,
   });
 
   const [formData, setFormData] = state;
@@ -26,34 +28,34 @@ export default function Login() {
     });
   };
 
-  const handleLogin = () => {
+  const handleRegister = () => {
     if (!validateRequiredFields()) {
       setError("Los campos son obligatorios");
       return;
     }
 
-    const storedUser = localStorage.getItem("user_session");
-
-    if (storedUser) {
-      const parsedUser = JSON.parse(storedUser);
-
-      if (
-        formData.email === parsedUser.email &&
-        formData.password === parsedUser.password
-      ) {
-        navigate("/dashboard");
-        return;
-      }
-    }
-
-    setError("Email o contraseña incorrectos");
+    localStorage.setItem("user_session", JSON.stringify(formData));
+    navigate("/dashboard");
   };
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen p-4 ">
       <div className="flex flex-col gap-4 items-center justify-center">
-        <h1 className="text-2xl font-bold text-white">Iniciar Sesión</h1>
+        <h1 className="text-2xl font-bold text-white">Registrarse</h1>
         <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-2">
+            <Label htmlFor="name" className="text-white">
+              Nombre:
+            </Label>
+            <Input
+              type="text"
+              id="name"
+              name="name"
+              value={formData.name}
+              onChange={handleChange}
+              required
+            />
+          </div>
           <div className="flex flex-col gap-2">
             <Label htmlFor="email" className="text-white">
               Email:
@@ -83,8 +85,10 @@ export default function Login() {
           {error && <p className="text-red-500">{error}</p>}
         </div>
         <div className="flex flex-row gap-4 mt-4">
-          <Button onClick={handleLogin}>Inicio de Sesión</Button>
-          <Button onClick={() => navigate("/register")}>Registrarse</Button>
+          <Button onClick={() => navigate("/login")}>
+            Volver al inicio de Sesión
+          </Button>
+          <Button onClick={handleRegister}>Registrarse</Button>
         </div>
       </div>
     </div>
