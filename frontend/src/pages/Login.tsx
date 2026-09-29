@@ -6,6 +6,8 @@ export default function Login() {
   let state = useState({
     email: "",
     password: "",
+    name: "",
+    balance: 0,
   });
 
   const [formData, setFormData] = state;
@@ -42,6 +44,18 @@ export default function Login() {
       <div className="flex flex-col gap-4 items-center justify-center">
         <h1>Iniciar Sesión</h1>
         <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-2">
+            <Label htmlFor="name" className="text-white">
+              Nombre:
+            </Label>
+            <Input
+              type="text"
+              id="name"
+              name="name"
+              value={formData.name}
+              onChange={handleChange}
+            />
+          </div>
           <div className="flex flex-col gap-2">
             <Label htmlFor="email" className="text-white">
               Email:
