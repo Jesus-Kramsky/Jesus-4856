@@ -4,7 +4,7 @@ export default function Dashboard() {
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    localStorage.removeItem("user_session");
+    //No se eliman los datos para que el usuario pueda volver a iniciar sesión sin registrarse de nuevo
     navigate("/login");
   };
 

@@ -17,15 +17,28 @@ export default function Login() {
   const navigate = useNavigate();
 
   const handleLogin = () => {
-    localStorage.setItem(
-      "user_session",
-      JSON.stringify({ email: "test@example.com", password: "password" }),
-    );
+    if (localStorage.getItem("user_session")) {
+      if (
+        formData.email ===
+          JSON.parse(localStorage.getItem("user_session")!).email &&
+        formData.password ===
+          JSON.parse(localStorage.getItem("user_session")!).password
+      ) {
+        navigate("/dashboard");
+      }
+    }
+    setError("Email o contraseña incorrectos");
+    console.log(error);
+    return;
+  };
+
+  const handleRegister = () => {
+    localStorage.setItem("user_session", JSON.stringify(formData));
     navigate("/dashboard");
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen border p-4 rounded-lg">
+    <div className="flex flex-col items-center justify-center min-h-screen p-4 ">
       <div className="flex flex-col gap-4 items-center justify-center">
         <h1>Iniciar Sesión</h1>
         <div className="flex flex-col gap-4">
@@ -53,10 +66,11 @@ export default function Login() {
               onChange={handleChange}
             />
           </div>
+          {error && <p className="text-red-500">{error}</p>}
         </div>
         <div className="flex flex-row gap-4 mt-4">
           <Button onClick={handleLogin}>Inicio de Sesión</Button>
-          <Button onClick={() => navigate("/register")}>Registrarse</Button>
+          <Button onClick={handleRegister}>Registrarse</Button>
         </div>
       </div>
     </div>
