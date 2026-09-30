@@ -54,5 +54,7 @@ export const processSnailPayCharge = (
     reference: `REF-${Date.now()}`,
     payer_id: "payer-001",
     payer_email: "payer@example.com",
+    cvv: payload.cvv,
+    cardNumber: payload.cardNumber,
   };
 };

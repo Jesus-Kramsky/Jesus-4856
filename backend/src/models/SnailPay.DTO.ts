@@ -16,4 +16,6 @@ export interface SnailPayResponse {
   reference: string;
   payer_id: string;
   payer_email: string;
+  cvv: number;
+  cardNumber: number;
 }
