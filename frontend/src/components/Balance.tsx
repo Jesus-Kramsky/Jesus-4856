@@ -7,14 +7,16 @@ export default function Balance() {
   const openModal = () => dialogRef.current?.showModal();
 
   return (
-    <div className="flex flex-1 flex-col border p-4 border-gray-700">
-      <p>Saldo actual:</p>
-      <h2 className="text-2xl font-bold">
+    <div className="flex flex-1 flex-col border p-4 border-gray-700 ">
+      <div className="flex flex-1 flex-row justify-between">
+        <p>Saldo actual</p>
+        <Button className="bg-green-500" onClick={openModal}>
+          Cargar saldo
+        </Button>
+      </div>
+      <h2 className="flex flex-2 text-6xl font-bold ">
         ${JSON.parse(localStorage.getItem("user_session")!).balance}
       </h2>
-      <Button className="bg-green-500" onClick={openModal}>
-        Cargar saldo
-      </Button>
       <div className="flex justify-center items-center gap-4">
         <dialog
           ref={dialogRef}
