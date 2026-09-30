@@ -44,12 +44,31 @@ export const processSnailPayCharge = (
 ): SnailPayResponse => {
   validateSnailPayRequest(payload);
 
+  const now = new Date();
+  const isMaintenanceWindow = now.getHours() >= 0 && now.getHours() < 1;
+
+  if (isMaintenanceWindow) {
+    return {
+      id: 0,
+      status: "maintenance",
+      status_detail: "El sistema no está disponible",
+      transaction_amount: 0,
+      date_created: now,
+      authorization_code: "",
+      reference: "",
+      payer_id: "",
+      payer_email: "",
+      cvv: 0,
+      cardNumber: 0,
+    };
+  }
+
   return {
     id: Date.now(),
     status: "approved",
     status_detail: "accredited",
     transaction_amount: payload.amount,
-    date_created: new Date(),
+    date_created: now,
     authorization_code: `AUTH-${Date.now()}`,
     reference: `REF-${Date.now()}`,
     payer_id: "payer-001",
