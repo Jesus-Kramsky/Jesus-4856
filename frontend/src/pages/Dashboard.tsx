@@ -17,16 +17,44 @@ export default function Dashboard() {
         </h1>
         <Button onClick={handleLogout}>Cerrar Sesión</Button>
       </div>
-      <div className="flex flex-row gap-4">
-        <div className="flex flex-col border p-4 border-gray-700">
+      <div className="flex flex-row min-w-screen gap-4">
+        <div className="flex flex-1 flex-col border p-4 border-gray-700">
           <p>Saldo actual:</p>
           <h2 className="text-2xl font-bold">
             ${JSON.parse(localStorage.getItem("user_session")!).balance}
           </h2>
           <Button className="bg-green-500">Cargar saldo</Button>
         </div>
-        <div className="flex flex-col border p-4 border-gray-700">
+        <div className="flex flex-1 flex-col border p-4 gap-4 border-gray-700">
           <p>Resumen del día</p>
+          <div className="flex flex-row justify-center items-center  gap-4">
+            <div className="flex flex-col border rounded-lg p-4">
+              <p>Caracoles</p>
+              <p className="text-2xl font-bold">6</p>
+            </div>
+            <div className="flex flex-col border rounded-lg p-4">
+              <p>Carreras</p>
+              <p className="text-2xl font-bold">6</p>
+            </div>
+          </div>
+          <div className="flex flex-row justify-center items-center  gap-4">
+            <div className="flex flex-col border rounded-lg p-4">
+              <p>Apuestas</p>
+              <p className="text-2xl font-bold">22</p>
+            </div>
+            <div className="flex flex-col border rounded-lg p-4">
+              <p>Ganadas</p>
+              <p className="text-2xl font-bold">36%</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div className="flex flex-row min-w-screen gap-4">
+        <div className="flex flex-1 flex-col border p-4 gap-4 border-gray-700">
+          <p>Apuestas ganadas y perdidas</p>
+        </div>
+        <div className="flex flex-1 flex-col border p-4 gap-4 border-gray-700">
+          <p>Victorias por caracol</p>
         </div>
       </div>
     </div>
