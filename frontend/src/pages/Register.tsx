@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router";
 import { useState } from "react";
 import { Button, Input, Label } from "@heroui/react";
+import { Hash } from "../utils/Hash";
 
 export default function Register() {
   let state = useState({
@@ -29,15 +30,28 @@ export default function Register() {
     });
   };
 
-  const handleRegister = () => {
+  const handleRegister = async () => {
     if (!validateRequiredFields()) {
       setError("Los campos son obligatorios");
       return;
     }
-
-    formData.active_session = true;
-    localStorage.setItem("user_session", JSON.stringify(formData));
-    navigate("/dashboard");
+    try {
+      const { hash, salt } = await Hash(formData.password);
+      const user = {
+        ...formData,
+        password: hash,
+        password_salt: salt,
+        active_session: true,
+      };
+      localStorage.setItem("user_session", JSON.stringify(user));
+      navigate("/dashboard");
+    } catch (error) {
+      setError(
+        error instanceof Error
+          ? error.message
+          : "No se pudo proteger la contraseña.",
+      );
+    }
   };
 
   return (
@@ -73,7 +87,7 @@ export default function Register() {
           </div>
           <div className="flex flex-col gap-2">
             <Label htmlFor="password" className="text-white">
-              Password:
+              Contraseña:
             </Label>
             <Input
               type="password"

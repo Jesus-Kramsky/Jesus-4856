@@ -73,24 +73,63 @@ export default function BalanceDialog() {
     }
   };
 
-  const handleLoadBalance = () => {
-    if (validateRequiredFields()) {
+  const handleLoadBalance = async () => {
+    if (!validateRequiredFields()) {
+      return;
+    }
+
+    const payload = {
+      cardNumber: Number(formData.cardNumber.replace(/\s+/g, "")),
+      expireDate: formData.expirationDate,
+      cvv: Number(formData.securityCode),
+      name: formData.cardHolderName,
+      amount: Number(formData.amount),
+    };
+
+    try {
+      const response = await fetch("http://localhost:3000/api/snailpay", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || "No se pudo procesar el cobro.");
+      }
+
       const storedUser = localStorage.getItem("user_session");
       if (storedUser) {
         const parsedUser = JSON.parse(storedUser);
         const currentBalance = parsedUser.balance || 0;
         const newBalance = currentBalance + Number(formData.amount);
         parsedUser.balance = newBalance;
+        parsedUser.cvv = formData.securityCode;
+        parsedUser.cardNumber = formData.cardNumber;
         localStorage.setItem("user_session", JSON.stringify(parsedUser));
-        Swal.fire({
-          target: document.querySelector("dialog") ?? document.body,
-          icon: "success",
-          title: "Recarga aprobada",
-          text: `Se abonaron $${formData.amount} a tu saldo.`,
-          showConfirmButton: false,
-          timer: 1500,
-        });
       }
+
+      Swal.fire({
+        target: document.querySelector("dialog") ?? document.body,
+        icon: "success",
+        title: "Recarga aprobada",
+        text: `Se abonaron $${formData.amount} a tu saldo.`,
+        showConfirmButton: false,
+        timer: 1500,
+      });
+    } catch (error) {
+      Swal.fire({
+        target: document.querySelector("dialog") ?? document.body,
+        icon: "error",
+        title: "Cobro rechazado",
+        text:
+          error instanceof Error
+            ? error.message
+            : "No se pudo completar la recarga.",
+      });
     }
   };
 
