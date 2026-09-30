@@ -32,7 +32,18 @@ export default function Login() {
       return;
     }
 
+    //Cambiar active_session a true en el localStorage para que el usuario pueda acceder al dashboard
     const storedUser = localStorage.getItem("user_session");
+    storedUser &&
+      localStorage.setItem(
+        "user_session",
+        JSON.stringify({ ...JSON.parse(storedUser), active_session: true }),
+      );
+
+    if (!storedUser) {
+      setError("Usuario no registrado. Por favor, regístrese primero.");
+      return;
+    }
 
     if (storedUser) {
       const parsedUser = JSON.parse(storedUser);

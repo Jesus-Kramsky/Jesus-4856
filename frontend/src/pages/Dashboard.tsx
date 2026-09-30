@@ -10,6 +10,12 @@ export default function Dashboard() {
 
   const handleLogout = () => {
     //No se eliman los datos para que el usuario pueda volver a iniciar sesión sin registrarse de nuevo
+    const storedUser = localStorage.getItem("user_session");
+    storedUser &&
+      localStorage.setItem(
+        "user_session",
+        JSON.stringify({ ...JSON.parse(storedUser), active_session: false }),
+      );
     navigate("/login");
   };
 

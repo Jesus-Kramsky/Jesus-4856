@@ -5,7 +5,10 @@ export default function ProtectedRoute({
 }: {
   children: React.ReactNode;
 }) {
-  const isAuthenticated = Boolean(localStorage.getItem("user_session"));
+  //verificar si active_session es true en el localStorage
+  const isAuthenticated = JSON.parse(
+    localStorage.getItem("user_session") || "{}",
+  ).active_session;
 
   if (!isAuthenticated) {
     return <Navigate to="/login" replace />;

@@ -8,6 +8,7 @@ export default function Register() {
     password: "",
     name: "",
     balance: 0,
+    active_session: false,
   });
 
   const [formData, setFormData] = state;
@@ -34,6 +35,7 @@ export default function Register() {
       return;
     }
 
+    formData.active_session = true;
     localStorage.setItem("user_session", JSON.stringify(formData));
     navigate("/dashboard");
   };
