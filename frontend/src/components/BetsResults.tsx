@@ -8,7 +8,7 @@ export default function BetsResults() {
   return (
     <div className="flex flex-1 flex-col border p-4 gap-4 border-gray-700">
       <p>Apuestas ganadas y perdidas</p>
-      <div className="flex flex-row gap-4">
+      <div className="flex flex-row gap-4 justify-center">
         <PieChart width={240} height={240}>
           <Pie
             data={pieData}
