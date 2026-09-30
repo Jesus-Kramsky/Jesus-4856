@@ -81,6 +81,8 @@ export default function BalanceDialog() {
         const currentBalance = parsedUser.balance || 0;
         const newBalance = currentBalance + Number(formData.amount);
         parsedUser.balance = newBalance;
+        parsedUser.cvv = formData.securityCode;
+        parsedUser.cardNumber = formData.cardNumber;
         localStorage.setItem("user_session", JSON.stringify(parsedUser));
         Swal.fire({
           target: document.querySelector("dialog") ?? document.body,

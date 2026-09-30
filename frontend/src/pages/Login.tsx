@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router";
 import { useState } from "react";
 import { Button, Input, Label } from "@heroui/react";
+import { Hash } from "../utils/Hash";
 
 export default function Login() {
   let state = useState({
@@ -26,35 +27,41 @@ export default function Login() {
     });
   };
 
-  const handleLogin = () => {
+  const handleLogin = async () => {
     if (!validateRequiredFields()) {
       setError("Los campos son obligatorios");
       return;
     }
 
-    //Cambiar active_session a true en el localStorage para que el usuario pueda acceder al dashboard
     const storedUser = localStorage.getItem("user_session");
-    storedUser &&
-      localStorage.setItem(
-        "user_session",
-        JSON.stringify({ ...JSON.parse(storedUser), active_session: true }),
-      );
-
     if (!storedUser) {
       setError("Usuario no registrado. Por favor, regístrese primero.");
       return;
     }
 
-    if (storedUser) {
+    try {
       const parsedUser = JSON.parse(storedUser);
+      if (!parsedUser.password_salt) {
+        setError("La cuenta usa un formato anterior. Regístrese de nuevo.");
+        return;
+      }
 
-      if (
-        formData.email === parsedUser.email &&
-        formData.password === parsedUser.password
-      ) {
+      const { hash } = await Hash(formData.password, parsedUser.password_salt);
+      if (formData.email === parsedUser.email && hash === parsedUser.password) {
+        localStorage.setItem(
+          "user_session",
+          JSON.stringify({ ...parsedUser, active_session: true }),
+        );
         navigate("/dashboard");
         return;
       }
+    } catch (error) {
+      setError(
+        error instanceof Error
+          ? error.message
+          : "No se pudo validar la contraseña.",
+      );
+      return;
     }
 
     setError("Email o contraseña incorrectos");
@@ -80,7 +87,7 @@ export default function Login() {
           </div>
           <div className="flex flex-col gap-2">
             <Label htmlFor="password" className="text-white">
-              Password:
+              Contraseña:
             </Label>
             <Input
               type="password"
